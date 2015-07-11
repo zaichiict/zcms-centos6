@@ -1,6 +1,6 @@
 #!/bin/bash
 # Huong dan: Go lenh curl o duoi trong terminal ssh
-# curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms | sh
+# curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms_production | sh
 dbUsername="postgres"
 dbPassword=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 22 | head -n 1)
 
@@ -116,8 +116,9 @@ echo "---------------------------------------------------"
 echo "---------------------------------------------------"
 echo "- DB INFO:                                        -"
 echo "- DB USERNAME   : postgres                        -"
-echo "- DB PASSWORD   : $dbPassword                     -"
-echo "- MySQL PASSWORD: $dbPassword                     -"
+echo "- DB PASSWORD   : $dbPassword          -"
+echo "- MySQL PASSWORD: $dbPassword          -"
+echo "- MySQL PASSWORD: 1111111111111111111111          -"
 echo "- Please change your password for postgres, mysql -"
 echo "---------------------------------------------------"
 echo "---------------------------------------------------"
