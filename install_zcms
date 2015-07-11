@@ -1,6 +1,12 @@
 #!/bin/bash
 # Huong dan: Go lenh curl o duoi trong terminal ssh
 # curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms | sh
+
+#Config Color
+BG_GREEN="\e[42m\e[97m"
+BG_NC="\e[0m\n"
+
+#Config db password
 dbUsername="postgres"
 dbPassword="123456"
 
@@ -32,6 +38,7 @@ ln -s /usr/pgsql-9.4/bin/pg_config /usr/bin/pg_config
 chkconfig postgresql-9.4 on
 service postgresql-9.4 start
 su postgres -c "psql --command \"ALTER USER $dbUsername WITH PASSWORD '$dbPassword'\"";
+su postgres -c "psql --command \"CREATE DATABASE zcms\"";
 setsebool -P httpd_can_network_connect 1
 service iptables restart
 
@@ -47,7 +54,8 @@ y
 y
 y
 EOF
-mysql --user="root" --password="123456" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';"
+mysql --user="root" --password="$dbPassword" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$dbPassword';"
+mysql --user="root" --password="$dbPassword" -e "CREATE DATABASE zcms;"
 service iptables restart
 
 #Install phpMyAdmin
@@ -111,16 +119,35 @@ zcms restart
 #Clean YUM 
 yum clean all
 
+echo "---------------------------------------------------
+---------------------------------------------------
+-----------  INSTALL ZCMS SUCCESSFULLY  -----------
+---------------------------------------------------
+---------------------------------------------------
+- DB INFO:                                        -
+- DB USERNAME   : postgres                        -
+- DB PASSWORD   : $dbPassword          -
+- MySQL PASSWORD: $dbPassword          -
+- Please change your password for postgres, mysql -
+===================================================
+= WARNING: PLEASE REMEMBER AND REMOVE THIS FILE   =
+===================================================" > install_info_db.txt
+
+clean
+
+
 echo "---------------------------------------------------"
-echo "-------------  INSTALL SUCCESSFULLY  --------------"
+echo "---------------------------------------------------"
+echo "-----------  INSTALL ZCMS SUCCESSFULLY  -----------"
 echo "---------------------------------------------------"
 echo "---------------------------------------------------"
 echo "- DB INFO:                                        -"
 echo "- DB USERNAME   : postgres                        -"
-echo "- DB PASSWORD   : 123456                          -"
-echo "- MySQL PASSWORD: 123456                          -"
+echo "- DB PASSWORD   : $dbPassword                          -"
+echo "- MySQL PASSWORD: $dbPassword                          -"
 echo "- Please change your password for postgres, mysql -"
 echo "---------------------------------------------------"
+echo "- READ INFO DATABASE: # nano ~\\install_info_db.txt-"
 echo "---------------------------------------------------"
 echo "-                ZCMS Command Line                -" 
 echo "---------------------------------------------------"

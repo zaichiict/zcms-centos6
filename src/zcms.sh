@@ -12,11 +12,23 @@ ZCMS_LINK="https://github.com/zaichiict/zcms/archive/master.zip"
 
 usage()
 {
-    echo "------------------------------------------------"
-    echo "---------- ZCMS - Phalcon Framework 2 ----------"
-    echo "- Usage: $0 (stop|start|restart|update|create) -"
-    echo "- Example: zcms create zcms-demo               -"
-    echo "------------------------------------------------"
+    clear
+    echo "--------------------------------------------------"
+    echo "-             )             *      (             -";
+    echo "-          ( /(     (     (  \`     )\ )          -";
+    echo "-          )\())    )\    )\))(   (()/(          -";
+    echo "-         ((_)\   (((_)  ((_)()\   /(_))         -";
+    echo "-          _((_)  )\___  (_()((_) (_))           -";
+    echo "-         |_  /  ((/ __| |  \/  | / __|          -";
+    echo "-          / /    | (__  | |\/| | \__ \          -";
+    echo "-         /___|    \___| |_|  |_| |___/          -";
+    echo "-                                                -";
+    echo "--------------------------------------------------"
+    echo "-       ZCMS - Power by Phalcon Framework 2      -"
+    echo "--------------------------------------------------"
+    echo "- Usage:create, new, stop, start, restart,update -"
+    echo "- Example: zcms create zcms-demo                 -"
+    echo "--------------------------------------------------"
 }
 
 remove_old_version(){
