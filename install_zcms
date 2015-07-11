@@ -48,6 +48,7 @@ y
 y
 EOF
 mysql --user="root" --password="123456" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';"
+service iptables restart
 
 #Install phpMyAdmin
 rm -fr /etc/nginx/conf.d/default.conf
