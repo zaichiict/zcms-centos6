@@ -11,8 +11,14 @@ ZCMS 2 is a PHP CMS on Phalcon Framework 2.0. See ZCMS in https://github.com/zai
 
 ## Install Command
 *Copy and pate in your terminal*
+#####1. Default password for Postgresql, MySQL: 123456
 ```
 curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms | sh
+```
+
+#####2. Default password for Postgresql, MySQL: Random password (22 Characters)
+```
+curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms_production | sh
 ```
 
 ## Command Instal and Update latest ZCMS
