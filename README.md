@@ -1,5 +1,5 @@
-# Auto Install ZCMS
-ZCMS is CMS on Phalcon Framework 2.0
+# Auto Install ZCMS 2
+ZCMS 2 is a PHP CMS on Phalcon Framework 2.0. See ZCMS in https://github.com/zaichiict/zcms
 
 * PHP 5.6
 * Postgresql 9.4
@@ -9,7 +9,8 @@ ZCMS is CMS on Phalcon Framework 2.0
 * Phalcon 2.0.x
 * ZCMS Command
 
-## Install
+## Install Command
+*Copy and pate in your terminal*
 ```
 curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms | sh
 ```
