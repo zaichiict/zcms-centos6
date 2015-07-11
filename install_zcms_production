@@ -2,7 +2,7 @@
 # Huong dan: Go lenh curl o duoi trong terminal ssh
 # curl https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/install_zcms | sh
 dbUsername="postgres"
-dbPassword="123456"
+dbPassword=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 22 | head -n 1)
 
 cd ~
 curl -O http://vault.centos.org/RPM-GPG-KEY-CentOS-6
@@ -40,14 +40,14 @@ service mysqld start
 /usr/bin/mysql_secure_installation << EOF
 
 y
-123456
-123456
+$dbPassword
+$dbPassword
 y
 y
 y
 y
 EOF
-mysql --user="root" --password="123456" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456';"
+mysql --user="root" --password="$dbPassword" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$dbPassword';"
 
 #Install phpMyAdmin
 rm -fr /etc/nginx/conf.d/default.conf
@@ -116,8 +116,8 @@ echo "---------------------------------------------------"
 echo "---------------------------------------------------"
 echo "- DB INFO:                                        -"
 echo "- DB USERNAME   : postgres                        -"
-echo "- DB PASSWORD   : 123456                          -"
-echo "- MySQL PASSWORD: 123456                          -"
+echo "- DB PASSWORD   : $dbPassword                     -"
+echo "- MySQL PASSWORD: $dbPassword                     -"
 echo "- Please change your password for postgres, mysql -"
 echo "---------------------------------------------------"
 echo "---------------------------------------------------"
