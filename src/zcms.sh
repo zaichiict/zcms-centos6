@@ -22,11 +22,17 @@ usage()
 remove_old_version(){
     rm -fr /opt/zcms/master.zip
     rm -fr /opt/zcms/zcms-master/
+    rm -fr /usr/bin/zcms
 }
 
 service_update(){
     #Remove old version
     remove_old_version
+
+    #Update command line
+    cd /usr/bin/
+    wget -O zcms https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms.sh
+    chmod +x /usr/bin/zcms
 
     if [ -d "$ZCMS_MAIN_DIR" ]
     then
@@ -41,7 +47,7 @@ service_update(){
         unzip master.zip
         rm -fr "$ZCMS_MAIN_DIR/master.zip"
     fi
-    echo "${BG_BLUE}Update ZCMS successfully!${BG_NC}"
+    printf "${BG_BLUE}Update ZCMS successfully!${BG_NC}"
 }
 
 service_create_project(){
@@ -76,7 +82,7 @@ service_stop(){
     service postgresql-9.4 stop
     service mysqld stop
     service php-fpm stop
-    echo "${BG_GREEN}Stop service successfully${BG_NC}"
+    printf "${BG_GREEN}Stop service successfully${BG_NC}"
 }
 
 service_restart(){
