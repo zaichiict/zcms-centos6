@@ -14,10 +14,10 @@ yum install -y wget nano git tree zip unzip tar man gcc gcc-c++ make
 cd /etc/yum.repos.d
 wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 wget http://rpms.famillecollet.com/enterprise/remi.repo
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/nginx.repo
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/nginx.repo
 rpm -Uvh epel-release-6*.rpm
 echo "y" | yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
-echo "y" | yum --enablerepo=remi,remi-php56 install -y perl zip unzip nginx redis postgresql94-server memcached php php-devel pcre-devel php-fpm php-pdo php-mcrypt php-redis php-pgsql php-gd php-xml php-recode php-mbstring php-mysql php-intl php-opcache php-pear php-pecl-memcache php-pecl-memcached php-apc libxml2-devel
+echo "y" | yum --enablerepo=remi,remi-php56 install -y perl nginx redis postgresql94-server mysql-server memcached php php-devel pcre-devel php-fpm php-pdo php-mcrypt php-redis php-pgsql php-gd php-xml php-recode php-mbstring php-mysql php-intl php-opcache php-pear php-pecl-memcache php-pecl-memcached php-apc libxml2-devel
 
 service postgresql-9.4 initdb
 sed -i '18iexclude=postgresql*' /etc/yum.repos.d/CentOS-Base.repo
@@ -34,16 +34,46 @@ su postgres -c "psql --command \"ALTER USER $dbUsername WITH PASSWORD '$dbPasswo
 setsebool -P httpd_can_network_connect 1
 service iptables restart
 
+#Config MySQL
+service mysqld start
+/usr/bin/mysql_secure_installation << EOF
+
+y
+123456
+123456
+y
+y
+y
+y
+EOF
+
+#Install phpMyAdmin
+rm -fr /etc/nginx/conf.d/default.conf
+cd /etc/nginx/conf.d/
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/default.conf
+chcon -Rt httpd_sys_rw_content_t /usr/share/nginx/html/
+cd ~
+wget https://files.phpmyadmin.net/phpMyAdmin/4.4.11/phpMyAdmin-4.4.11-english.tar.xz
+unxz phpMyAdmin-4.4.11-english.tar.xz
+tar -xvf phpMyAdmin-4.4.11-english.tar
+mv phpMyAdmin-4.4.11-english /usr/share/nginx/html/phpmyadmin
+mv /usr/share/nginx/html/phpmyadmin/config.sample.inc.php /usr/share/nginx/html/phpmyadmin/config.inc.php
+rm -fr phpMyAdmin-4.4.11-english.tar
+RD_COOKIE_PHPMYADMIN=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 32 | head -n 1)
+perl -i -pe "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RD_COOKIE_PHPMYADMIN'/g" /usr/share/nginx/html/phpmyadmin/config.inc.php
+chmod 755 /usr/share/nginx/html/phpmyadmin/
+chmod 755 /usr/share/nginx/html/
+
 rm -fr /etc/php.ini
 cd /etc/
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/php.ini
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/php.ini
 cd /etc/nginx/conf.d/
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/zcms-demo.conf
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/zcms.conf.example
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms-demo.conf
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms.conf.example
 cd /etc/php.d/
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/60-phalcon.ini
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/60-phalcon.ini
 cd /usr/bin/
-wget https://raw.githubusercontent.com/kimthangatm/linux-tools/master/src/zcms.sh
+wget https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms.sh
 mv /usr/bin/zcms.sh /usr/bin/zcms
 chmod +x /usr/bin/zcms
 
@@ -61,6 +91,7 @@ chkconfig php-fpm on
 chkconfig redis on
 chkconfig postgresql-9.4 on
 chkconfig nginx on
+chkconfig mysqld on
 
 #Install ZCMS for Command
 zcms install
@@ -77,13 +108,19 @@ zcms restart
 #Clean YUM 
 yum clean all
 
-echo "-----------------------------------------------"
-echo "-----------  INSTALL SUCCESSFULLY  ------------"
-echo "-----------------------------------------------"
-echo "-----------------------------------------------"
-echo "- DB INFO:                                    -"
-echo "- DB USERNAME   : postgres                    -"
-echo "- DB PASSWORD   : 123456                      -"
-echo "- Command       : zcms [OPTION]               -" 
-echo "- OPTION:start|update|create|restart|install) -"
-echo "-----------------------------------------------"
+echo "---------------------------------------------------"
+echo "-------------  INSTALL SUCCESSFULLY  --------------"
+echo "---------------------------------------------------"
+echo "---------------------------------------------------"
+echo "- DB INFO:                                        -"
+echo "- DB USERNAME   : postgres                        -"
+echo "- DB PASSWORD   : 123456                          -"
+echo "- MySQL PASSWORD: 123456                          -"
+echo "- Please change your password for postgres, mysql -"
+echo "---------------------------------------------------"
+echo "---------------------------------------------------"
+echo "-                ZCMS Command Line                -" 
+echo "---------------------------------------------------"
+echo "- Command       : zcms [OPTION]                   -" 
+echo "- OPTION:start|update|create|new|restart|install) -"
+echo "---------------------------------------------------"
