@@ -1,0 +1,43 @@
+
+server {
+    #Please replace "yoursite" -> your domain
+
+    #listen 80;
+    #server_name www.yoursite.com;
+    #access_log /var/log/nginx/yoursite-access.log;
+    #error_log  /var/log/nginx/yoursite-error.log;
+    #set $root_path '/home/yoursite/public';
+
+    listen 80;
+    server_name www.yoursite.com;
+    access_log /var/log/nginx/yoursite-access.log;
+    error_log  /var/log/nginx/yoursite-error.log;
+
+    index index.php index.html index.htm;
+    set $root_path '/home/yoursite/public';
+    root $root_path;
+
+    try_files $uri $uri/ @rewrite;
+
+    location @rewrite {
+        rewrite ^/(.*)$ /index.php?_url=/$1;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index /index.php;
+        fastcgi_split_path_info       ^(.+\.php)(/.+)$;
+        fastcgi_param PATH_INFO       $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ {
+        root $root_path;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
