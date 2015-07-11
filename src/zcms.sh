@@ -22,7 +22,14 @@ usage()
 remove_old_version(){
     rm -fr /opt/zcms/master.zip
     rm -fr /opt/zcms/zcms-master/
+}
+
+zcms_update_command(){
     rm -fr /usr/bin/zcms
+    cd /usr/bin/
+    wget -O zcms https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms.sh
+    chmod +x /usr/bin/zcms
+    printf "${BG_BLUE}Update \"ZCMS Command Line\" successfully!${BG_NC}"
 }
 
 service_update(){
@@ -30,9 +37,7 @@ service_update(){
     remove_old_version
 
     #Update command line
-    cd /usr/bin/
-    wget -O zcms https://raw.githubusercontent.com/zaichiict/zcms-centos6/master/src/zcms.sh
-    chmod +x /usr/bin/zcms
+    zcms_update_command
 
     if [ -d "$ZCMS_MAIN_DIR" ]
     then
@@ -111,6 +116,9 @@ case $1 in
     ;;
     new)
         service_create_project
+    ;;
+    update_command)
+        zcms_update_command
     ;;
     *)
     usage
