@@ -8,7 +8,7 @@ BG_NC="\e[0m\n"
 
 #Config db password
 dbUsername="postgres"
-dbPassword=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 22 | head -n 1)
+dbPassword=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 22 | head -n 1)
 
 cd ~
 curl -O http://vault.centos.org/RPM-GPG-KEY-CentOS-6
@@ -118,6 +118,7 @@ zcms restart
 #Clean YUM 
 yum clean all
 
+cd ~
 echo "---------------------------------------------------
 
 -----------  INSTALL ZCMS SUCCESSFULLY  -----------
