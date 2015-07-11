@@ -1,9 +1,13 @@
 # Auto Install ZCMS
+ZCMS is CMS on Phalcon Framework 2.0
 
-* Postgresql
+* PHP 5.6
+* Postgresql 9.4
 * Nginx
 * Redis
 * MySql
+* Phalcon 2.0.x
+* ZCMS Command
 
 ## Install
 ```
