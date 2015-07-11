@@ -65,6 +65,7 @@ service_start(){
     service redis start
     service nginx start
     service postgresql-9.4 start
+    service mysqld start
     service php-fpm start
     printf "${BG_GREEN}Start service successfully${BG_NC}"
 }
@@ -73,6 +74,7 @@ service_stop(){
     service redis stop
     service nginx stop
     service postgresql-9.4 stop
+    service mysqld stop
     service php-fpm stop
     echo "${BG_GREEN}Stop service successfully${BG_NC}"
 }
