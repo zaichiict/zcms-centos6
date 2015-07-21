@@ -54,7 +54,7 @@ y
 y
 EOF
 mysql --user="root" --password="$dbPassword" -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$dbPassword';"
-mysql --user="root" --password="$dbPassword" -e "CREATE DATABASE zcms;"
+mysql --user="root" --password="$dbPassword" -e "CREATE DATABASE zcms COLLATE 'utf8_general_ci';"
 service iptables restart
 
 #Install phpMyAdmin
@@ -134,6 +134,7 @@ echo "---------------------------------------------------
 ===================================================" > install_info_db.txt
 
 clean
+history -cw
 
 echo "---------------------------------------------------"
 echo "---------------------------------------------------"
