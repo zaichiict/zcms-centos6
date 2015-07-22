@@ -73,6 +73,7 @@ perl -i -pe "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RD_COO
 chmod 755 /usr/share/nginx/html/phpmyadmin/
 chmod 755 /usr/share/nginx/html/
 chcon -Rt httpd_sys_rw_content_t /usr/share/nginx/html/
+echo "<?php echo phpinfo();" > /usr/share/nginx/html/index.php
 
 rm -fr /etc/php.ini
 cd /etc/
