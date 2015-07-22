@@ -31,6 +31,22 @@ usage()
     echo "--------------------------------------------------"
 }
 
+update_phalcon_version(){
+    if [ -d "/opt/zcms_update/" ]
+    then
+        rm -fr /opt/zcms_update/*
+    else
+        mkdir /opt/zcms_update
+    fi
+
+    cd /opt/zcms_update
+    wget "https://github.com/phalcon/cphalcon/archive/phalcon-v${PROJECT_NAME}.tar.gz"
+    tar -xvf "phalcon-v${PROJECT_NAME}.tar.gz"
+    rm -fr "phalcon-v${PROJECT_NAME}.tar.gz"
+    cd "cphalcon-phalcon-v${PROJECT_NAME}/build/"
+    ./install
+}
+
 remove_old_version(){
     rm -fr /opt/zcms/master.zip
     rm -fr /opt/zcms/zcms-master/
@@ -119,6 +135,9 @@ case $1 in
     ;;
     update)
         service_update
+    ;;
+    update_phalcon)
+        update_phalcon_version
     ;;
     install)
         service_update
